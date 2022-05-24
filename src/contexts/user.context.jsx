@@ -1,6 +1,9 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
 
-import { onAuthStateChangedListener, createUserDocumentFromAuth } from "../utils/firebase/firebase.utils";
+import {
+  onAuthStateChangedListener,
+  createUserDocumentFromAuth,
+} from "../utils/firebase/firebase.utils";
 
 //as the actual value you want to access
 export const UserContext = createContext({
@@ -8,18 +11,47 @@ export const UserContext = createContext({
   setCurrentUser: () => null,
 });
 
+export const USER_ACTION_TYPES = {
+    SET_CURRENT_USER: 'SET_CURRENT_USER'
+}
+
+const userReducer = (state, action) => {
+  console.log('dispatched')
+  console.log(action)
+  const { type, payload } = action;
+  switch (type) {
+    case USER_ACTION_TYPES.SET_CURRENT_USER:
+      return {
+        ...state,  //Always right your cases like thiss where you spread the previous values and update only what is needed.
+        currentUser: payload,
+      };
+      default:
+        throw new Error(`Unhandled type ${type} in userReducer`)
+  }
+};
+
+const INITIAL_STATE = {
+  currentUser: null
+}
+
 // this is the provider which is the actual component - this is a wrapper that will wrap the components that we want to access
 export const UserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const [ {currentUser}, dispatch ] = useReducer(userReducer, INITIAL_STATE)
+  console.log(currentUser)
+
+  const setCurrentUser = (user) => {
+    dispatch({ type: USER_ACTION_TYPES.SET_CURRENT_USER, payload: user}) // Dispatch the type and payload
+  }
+  
   const value = { currentUser, setCurrentUser };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChangedListener((user) => {
-        if(user) {
-            createUserDocumentFromAuth(user);
-        }
-        console.log(user)
-      setCurrentUser(user)
+      if (user) {
+        createUserDocumentFromAuth(user);
+      }
+      console.log(user);
+      setCurrentUser(user);
     });
     return unsubscribe; //THis is a clean-up function that removes the listener - still a bit confusing. It must remove previously
     //created listeners, they will continue to stack creating a data leak and we dont want that do we...
