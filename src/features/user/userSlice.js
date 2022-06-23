@@ -18,4 +18,7 @@ export const userSlice = createSlice({
   },
 });
 
+
+export const selectCurrentUser = (state) => state.user.currentUser; // Moving the user selector here rather that separate file
+
 export default userSlice.reducer;

@@ -1,4 +1,4 @@
-import { createSelector } from "reselect";  //This will memoize things meaning that if the input going into a function reamains the same
+import { createSelector } from "reselect";  //This will memoize things meaning that if the input going into a function remains the same
 // then the output (considering it's a pure function) will also remain the same negating the need to run the calculation again.
 
 const selectCategoryReducer = (state) => state.categories; // Get the slice of the entire state (here this is categories)
