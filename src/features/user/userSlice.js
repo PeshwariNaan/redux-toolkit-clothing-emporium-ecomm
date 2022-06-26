@@ -1,7 +1,6 @@
 import {
-  createAsyncThunk,
   createSlice,
-} from '@reduxjs/toolkit/dist/createAsyncThunk';
+} from '@reduxjs/toolkit';
 
 const initialState = {
   currentUser: null,
@@ -18,6 +17,7 @@ export const userSlice = createSlice({
   },
 });
 
+export const {setCurrentUser} = userSlice.actions
 
 export const selectCurrentUser = (state) => state.user.currentUser; // Moving the user selector here rather that separate file
 
