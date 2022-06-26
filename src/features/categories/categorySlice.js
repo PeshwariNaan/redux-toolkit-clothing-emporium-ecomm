@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getCategoriesAndDocuments } from '../../utils/firebase/firebase.utils';
-import { createSelector } from '@reduxjs/toolkit';
+//import { createSelector } from '@reduxjs/toolkit';
+import { createSelector } from "reselect";
 
 //Because fetching the categories data is async - we are going to use thunk
 //We are adding the isLoading and error fields for setup - not sure if the error is necessarry with rtk?
@@ -18,7 +19,7 @@ export const fetchCategoriesStartAsync = createAsyncThunk(
       console.log(categoriesArray)
       return categoriesArray
     } catch (error) {
-      return thunkAPI.rejectWithValue('/getCategoryItems - Something went wrong');
+      return thunkAPI.rejectWithValue('category/getCategoryItems async call - Something went wrong');
     }
   }
 );
@@ -56,6 +57,8 @@ export const selectCategoriesMap = createSelector(
     }, {})
   }
 );
+
+export const selectCategoriesisLoading = createSelector((state) => state.category.isLoading)
 
 export default categoriesSlice.reducer;
 

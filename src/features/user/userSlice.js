@@ -19,6 +19,7 @@ export const userSlice = createSlice({
 
 export const {setCurrentUser} = userSlice.actions
 
-export const selectCurrentUser = (state) => state.user.currentUser; // Moving the user selector here rather that separate file
+export const selectCurrentUser = (state) => state.user.currentUser; // Moving the user selector here rather than separate file - can also
+//easily put this in the component file that uses this piece of state
 
 export default userSlice.reducer;

@@ -6,7 +6,7 @@ import CategoryPreview from "../../components/category-preview/category-preview.
 import {
   selectCategoriesisLoading,
   selectCategoriesMap,
-} from "../../store/categories/category.selector";
+} from "../../features/categories/categorySlice"
 
 const CategoriesPreview = () => {
   const isLoading = useSelector(selectCategoriesisLoading);
